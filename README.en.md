@@ -44,6 +44,19 @@ The extension provides a Webview dashboard for managing and monitoring all saved
 - Account cards stretch evenly across the available width, with a minimum column width of `300px` (or one column in narrower windows); columns are added as space allows without reserving empty columns for nonexistent accounts, and cards share a content-based height with aligned footer actions and full emails on hover
 - Quick actions for add, import, and refresh-all
 
+### Scheduled Wakeups
+
+Open the clock button at the top right of the quota dashboard to add wakeup tasks. Choose saved accounts and a daily / weekday time or a fixed interval in hours / minutes. Select a model from the dropdown or enter a custom model ID, select a reasoning effort, and use a short prompt (default: `Reply with OK.`). Tasks support editing, pausing, deleting, manual tests, and recent execution history. Scheduled execution is disabled by default; enable the master switch after configuration. Enable or pause individual tasks on their cards.
+
+- Keep at least one VS Code window running. Occurrences missed by more than five minutes are skipped, including after shutdown or sleep.
+- Fixed intervals support 1 minute to 7 days. The first run is one interval after saving or resuming the task; subsequent runs keep the scheduled cadence. Manual tests do not change it, and missed cycles are not replayed in a batch. Reload all VS Code windows after upgrading: older schedulers preserve and refuse to process the newer storage format containing interval tasks.
+- Model choices include the GPT-6 and GPT-5.6 families; access depends on the selected accounts. Saved models are not replaced automatically. GPT-5.5 retires from Codex with ChatGPT sign-in on 2026-10-14; the editor displays a reminder. See the [official model guidance](https://learn.chatgpt.com/docs/models#gpt-55-retirement).
+- Requests use each selected account's OAuth tokens and consume a small amount of quota. Quotas refresh afterward; wakeups leave the current `auth.json` and active account intact. The actual quota window is determined by the server.
+- Windows and profiles under the same OS user on the same host share tasks. File leases and durable occurrence claims prevent duplicate scheduled dispatches. Failed or interrupted occurrences are not replayed automatically; a definitive HTTP 401 allows one token refresh and retry.
+- Editing, pausing, or deleting a task cancels its unfinished requests. Pausing the master switch stops scheduled runs; manual tests remain available.
+- Metadata lives in `~/.codex-accounts-manager/wakeup/`, without account tokens. Remote hosts schedule independently. The latest 100 history entries are retained; durable occurrence markers are kept separately.
+- The request follows [Cockpit Tools](https://github.com/jlcodes99/cockpit-tools/blob/main/src-tauri/src/modules/codex_local_access_foundation.rs). Enter a model ID available to the selected accounts.
+
 ### Multi-Account Management
 
 - Add a new account through OAuth
