@@ -41,6 +41,7 @@ The extension provides a Webview dashboard for managing and monitoring all saved
 - Current account summary with team info and quick actions
 - Quota gauges for 5-hour, weekly, and code review usage
 - Saved accounts list for multi-account management
+- Account cards stretch evenly across the available width, with a minimum column width of `300px` (or one column in narrower windows); columns are added as space allows without reserving empty columns for nonexistent accounts, and cards share a content-based height with aligned footer actions and full emails on hover
 - Quick actions for add, import, and refresh-all
 
 ### Multi-Account Management
@@ -79,7 +80,9 @@ Each account can show:
 
 ### Status Bar Monitoring
 
-- Show the current account quota summary in the VS Code status bar
+- Show the current account quota summary, for example `Codex 5h 82% · Wk 66%`; monthly quotas use `Mo`, and compact labels stay in English
+- Hide quota windows explicitly absent from the API; show `--` for unavailable or invalid percentages instead of inventing a full quota
+- Hover to inspect account details, quota reset countdowns, and the last refresh time independently of automation settings
 - Pin selected accounts from the dashboard into status visibility
 - Click the status bar entry to open the full quota dashboard
 
@@ -118,7 +121,7 @@ You can change these directly from the settings button in the top-right corner o
   - Disabled by default
   - When disabled, no timed refresh runs
 - `5-hour Quota Control`
-  - Disabled by default; while disabled, the status bar hides the 5-hour quota and the dashboard keeps it visible
+  - Disabled by default; quota display in the status bar, tooltip, and dashboard remains available regardless of this setting
   - Controls whether a valid 5-hour quota can trigger automatic switching or quota warnings
 - `Automatic Account Switching`
   - Disabled by default
